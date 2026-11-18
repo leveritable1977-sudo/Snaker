@@ -22,7 +22,7 @@ int msleep(long msec) {
     return res;
 }
 
-
+// Terminalinställningar för WSL
 struct termios orig_termios;
 
 void disable_raw_mode() {
@@ -72,7 +72,7 @@ void drawBoundaries() {
     for (int row = 0; row < ROWS + 2; row++) {
         for (int col = 0; col < COLS + 2; col++) {
             if (row == 0 || row == ROWS + 1 || col == 0 || col == COLS + 1) {
-                printf("%c", WALL);         
+                printf("%c", WALL);        
             } else {
                 printf(" ");
             }
@@ -155,7 +155,7 @@ int main() {
             break; 
         }
 
-       
+        // Självkollision
         int self_collision = 0;
         for (int i = 1; i < snake_len; i++) {
             if (snake[0].X == snake[i].X && snake[0].Y == snake[i].Y) {
@@ -168,10 +168,11 @@ int main() {
         // Äta mat
         if (snake[0].X == food.X && snake[0].Y == food.Y) {
             score += 10;
-            snake_len++;
-            Point *temp = realloc(snake, snake_len * sizeof(Point));
+            int new_len = snake_len + 1;
+            Point *temp = realloc(snake, new_len * sizeof(Point));
             if (temp == NULL) break;
             snake = temp;
+            snake_len = new_len;
             snake[snake_len - 1] = tail;
             spawnFood(&food, snake, snake_len);
         } else {
@@ -179,19 +180,24 @@ int main() {
             printf(" ");
         }
 
-       
+        // Rita orm
         for (int i = 0; i < snake_len; i++) {
             gotoxy(snake[i].X, snake[i].Y);
             if (i == 0) printf("O");
             else printf("o");
         }
-        fflush(stdout); // Tvingar utskrift direkt på skärmen
+
+        // Tvinga fram utskrift av maten varje varv så den inte suddas ut
+        gotoxy(food.X, food.Y);
+        printf("*");
+
+        fflush(stdout); 
 
         gotoxy(1, ROWS + 2);
         printf("POANG: %-5d (Q för att avsluta)", score);
-        fflush(stdout); // Tvingar utskrift av poäng
+        fflush(stdout); 
 
-        msleep(100w0); 
+        msleep(1000); 
     }
 
     free(snake);

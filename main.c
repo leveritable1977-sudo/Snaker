@@ -22,7 +22,7 @@ int msleep(long msec) {
     return res;
 }
 
-// Terminalinställningar för WSL
+
 struct termios orig_termios;
 
 void disable_raw_mode() {
@@ -155,7 +155,7 @@ int main() {
             break; 
         }
 
-        // Självkollision
+       
         int self_collision = 0;
         for (int i = 1; i < snake_len; i++) {
             if (snake[0].X == snake[i].X && snake[0].Y == snake[i].Y) {
@@ -179,7 +179,7 @@ int main() {
             printf(" ");
         }
 
-        // Rita orm
+       
         for (int i = 0; i < snake_len; i++) {
             gotoxy(snake[i].X, snake[i].Y);
             if (i == 0) printf("O");
@@ -191,7 +191,7 @@ int main() {
         printf("POANG: %-5d (Q för att avsluta)", score);
         fflush(stdout); // Tvingar utskrift av poäng
 
-        msleep(1000); 
+        msleep(100w0); 
     }
 
     free(snake);
